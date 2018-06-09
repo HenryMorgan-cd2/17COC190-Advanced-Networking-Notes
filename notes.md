@@ -448,6 +448,26 @@ Do not build "VLAN spaghetti":
 # Link Aggregation
 page 27
 
+<pre>
+Also known as port bundling/link building
+You can use multiple links in parallel as a single, logical link
+  For increased capacity
+  For redundancy (fault tolerance)
+LACP (Link Aggregation Control Protocol) is a standardized method of negotiating these bundled links between switches
+
+LACP Operation:
+
+Add LACP example image
+
+Switches A and B are connected to each other using two sets of Fast Ethernet ports
+LACP is enabled and the ports are turned on
+Switches start sending LACPDUs, then negotiate how to set up the aggregation
+The result is an aggregated 200 Mbps logical link
+The link is also fault tolerant:
+  If one of the member links fail, LACP will automaticallt take that link off the bundle, and keep sending traffic over the remaining link
+
+</pre>
+
 # Switching Loops
 page 29
 
