@@ -180,6 +180,7 @@ DNS (Domain Name System) - Maps human readable name to IP address
 # IPv6
 *Day 2 - Page 18*
 
+<pre>
 Successor to IPv4
 Expanded address space - Address length quadrupled to 16 bytes (128 bits)
 Header format simplification - fixed length, optional headers are dasiy-chained
@@ -229,13 +230,59 @@ Migration towards IPv6:
       Tunnels configured by tunnel broker
 
 Duel Stack Image
+</pre>
 
 # Large Network Issues & Routers
 *Day 2 - Page 25*
 
+<pre>
+Need for Packet Forwarding:
+  Many small networks can be interconnected to make a larger internetwork
+  A device on one network cannont send a packet directly to a device on another network
+  The packet has to be forwarded from one network to another, through intermediate nodes, until it reaches its destination
+  Intermediate nodes -> routers
+
+IP Router:
+  A device with more than one link-layer interface
+  Different IP addresses (from different subnets) on different interfaces
+  Recieves packets -> forwards them to get them one hop closer to destination
+  Maintians forwarding tables
+
+Action for each packet:
+  Packet recieved on one interface
+  Check if router is destination -> if so, pass to higher layers
+  Decrement TTL (time to live) -> discard if TTL = 0
+  Look up destination IP in forwarding table
+  
+Forwarding vs Routing:
+  Forwarding -> moving packets from input to output (uses forwarding table and info in packet)
+  Routing -> process which builds and maintains the forwarding table (one or more routing protocols, Procedures (algorithms) to convert routing info to forwarding table)
+  Basic: 
+    Routing = building maps + giving directions
+    Forwarding = moving packets between interfaces based on directions
+
+Each router tries to get the poacket one hop closer to destination
+Each router makes an independent decision based on its own forwarding table
+Routers talk routing protocols to each other, to help update routing and forwarding tables
+
+Router Functions:
+  Determin optimum routing path through network (lowest delay, highest reliability)
+  Move packets through the network
+  Interconnected router exchange routing tables in order to maintain a clear picture of the network
+  In a large network -> routing table updates can consume a lot of bandwidth (update protocol required)
+
+Forwarding Table Structure:
+  Don't list every IP number on the Internet (would be huge)
+  Contains prefixes (network numbers) -> "If the first /n bits matches this entry, send the datagram that way"
+  Longest prefix wins (more specific route) if more than one
+  0.0.0.0/0 is default route -> matches anything but only if no other prefix matches
+  
+</pre>
+
 # Cisco Router Configuration - Basics
 *Day 2 - Page 30*
 
+Is this really needed?
 ------------------------
 
 http://learn.lboro.ac.uk/pluginfile.php/979934/mod_resource/content/1/17coc190_Day3.pdf
