@@ -282,7 +282,9 @@ Forwarding Table Structure:
 # Cisco Router Configuration - Basics
 *Day 2 - Page 30*
 
+<pre>
 Is this really needed?
+</pre>
 ------------------------
 
 http://learn.lboro.ac.uk/pluginfile.php/979934/mod_resource/content/1/17coc190_Day3.pdf
