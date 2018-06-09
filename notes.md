@@ -147,6 +147,33 @@ http://learn.lboro.ac.uk/pluginfile.php/976842/mod_resource/content/0/coc190_201
 
 # More IPv4
 *Day 2 - Page 8*
+Maximum Number of hosts = number of bits in host part - 2
+Very large blocks allocated to RIRs (e.g /8)
+  - Divided into smaller blocks for business (e.g /17)
+  - Divided into smaller blocks for local networks (e.g /26)
+  - Each host geta a host address
+Current system - classless, slash/netmask notation
+Old System - Classes (A, B, C)
+Class A - large, 8 bit network, 24 bit host
+Class B - medium, 16 bits network, 16 bit host
+Class C - small, 24 bit network, 8 bit host
+CIDR - Classless Inter-Domain Routing (routing does not assume that class implies prefix length)
+VLSM - Variable-Length Subnet Masks (routing does not assume all subnets are the same size)
+Classless example:
+  ISP get large bloack of addresses e.g. /16 (65536 addresses)
+  Allocates smaller blocks to customers e.g. /22 (1024), /28 (16) etc
+  An organisation recieving /22 divideds it into smaller blocks e.g. /26 (64), /27 (32) etc
+Private addresses - not allocated to any particular organisation, internal use, not globally unique -> not internet routable
+IPv4 addresse space running out - work arounds (NAT, dynamic allocation of less addresses than customers etc), IPv6 is real solution. Causes: WWW unforseen, created massive deman, networking of previously standalone devices, ineffcient allocation of initial address space
+NAT (Network Address Translation) - Internal addresses are private, router translates private IP's to public ones, violates layer seperation
+Dynamic Allocation - More customers than address, addresses allocated on demand, assumes not everyone online at the same time, most customers dont get static IP address
+ARP (Address Resolution Protocol) - In local network, LAyer 7 apps need to connect to distributed Apps by IP address, LAN commuinication lower doesn needs also a MAC address to encapsulate and form an ethernet frame to go to wire, ARP maps these two and caches mapping to ARP table
+DHCP (Dynamic Host Configuration Protocol) - Dynamic allocation of host addresses
+  Host braodcasts UDP Datagram using port 67 with "this host" source address; 0.0.0.0
+  DHCP server sends "offer"
+  Host sends "Request"
+  DHCP sever sends Ack
+DNS (Domain Name System) - Maps human readable name to IP address
 
 # IPv6
 *Day 2 - Page 18*
