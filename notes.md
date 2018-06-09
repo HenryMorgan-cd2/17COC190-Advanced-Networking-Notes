@@ -147,6 +147,7 @@ http://learn.lboro.ac.uk/pluginfile.php/976842/mod_resource/content/0/coc190_201
 
 # More IPv4
 *Day 2 - Page 8*
+<pre>
 Maximum Number of hosts = number of bits in host part - 2
 Very large blocks allocated to RIRs (e.g /8)
   - Divided into smaller blocks for business (e.g /17)
@@ -174,6 +175,7 @@ DHCP (Dynamic Host Configuration Protocol) - Dynamic allocation of host addresse
   Host sends "Request"
   DHCP sever sends Ack
 DNS (Domain Name System) - Maps human readable name to IP address
+</pre>
 
 # IPv6
 *Day 2 - Page 18*
