@@ -179,6 +179,57 @@ DNS (Domain Name System) - Maps human readable name to IP address
 
 # IPv6
 *Day 2 - Page 18*
+
+Successor to IPv4
+Expanded address space - Address length quadrupled to 16 bytes (128 bits)
+Header format simplification - fixed length, optional headers are dasiy-chained
+No checksum at the IP network layer
+
+Add image of IPv4/IPv6 header comparison
+
+IPv4 - 32 bits, 4,294,967,296 possible addresses
+PIv6 - 128 bits, 3.4 x 10^38 addresses, 5 x 10^28 per person on the planet
+
+Address Representation - 16 bit fields in case insensitive colon hexadecimal representation
+Leading zeros in a field are optional
+Succerssive feilds of 0 given by ::, but only once in an address
+  - 0:0:0:0:0:0:0:1 -> ::1 (loopback address)
+  - 0:0:0:0:0:0:0:0 -> :: (unspecified address)
+In a URL it is enclosed in square brackets e.g. http://[2001:4860:b006::67]:80/index.html, cumbersome for users, mostly for diagnostic purposes, use FQDN (Fully Qualified Domain Name) instead
+
+Global Unicast Addresses: Provider - Site - Host = 48 bits - 16 bits - 64 bits = 001 - Global Routing Prefix - Subnet-id - Interface ID
+
+Address Allocation:
+  IANA is allocating out of 2000::/3 for initial IPv6 unicast use
+  Each registry gets a /12 prefix from the IANA
+  Registry allocated a /32 prefix (or larger) to an IPv6 ISP
+  Policy is that an ISP allocates a /48 prefix to each end customer
+Registry - /12, ISP prefix - /32, Site prefix - /48, LAN prefix - /64
+
+64 bits reserved for the interface ID - possibility of 2^64 hosts on one network LAN
+16 bits reserved for the end site - possibility of 2^16 networks at each end-site, 65536 subnets equivalent to a /12 in IPv4 (assuming 16 hosts per IPv4 subnet)
+
+Benefits:
+  Every link uses fe80::/64 for link-local stuff (hosts in isoloated networks automatically communicate)
+  Router can announce global addresses, Router Advertisement (RA) ICMP packets e.g 2001:608:4:0::/64
+  Clients will use all available /64 prefixes (compute the host part from their MAC address, EUI-64: Algorithm for computing 64-bit host paart from 48-bit (Ethernet) MAC address)
+  
+EUI-64 diagram but probably not needed
+  
+Migration towards IPv6:
+  Problems:
+    v4 host wanting to talk to v6 host
+    v6 networks that are only connected by v4 infrastructure
+  Migration techniques::
+    Duel-stacked hosts/router (v4 + v6 IP stack on same machine)
+    Duel-stacked proxies / application-level gateways
+    Tunnelling
+      Manually configured tunnels
+      Automatic tunnelling (6to4, ISATAP, Teredo)
+      Tunnels configured by tunnel broker
+
+Duel Stack Image
+
 # Large Network Issues & Routers
 *Day 2 - Page 25*
 
