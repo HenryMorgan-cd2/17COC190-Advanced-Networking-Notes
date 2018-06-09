@@ -356,6 +356,95 @@ EGPs (one single de-facto standard):
 # Layer-2 Network Design
 page 11
 
+<pre>
+Encapsulation & decapsulation:
+  Lower layers add headers (and sometimes trailers) to data from higher layers (see previous layer images)
+
+Hubs (repeaters):
+  Not really used anymore
+  Frame sent by one node is sent to all others
+  
+Switch:
+  Learns the location of each node by looking at the source address of each incoming frame, nd builds a forwarding table
+  Forwards each incoming frame to the port where the destination node is
+    Reduces the collision domain
+    Makes more efficient use of the wire
+    Nodes don't waste time checking frames not destined to them
+  Broadcasts frames when desintation address is not found, the frame is destined to the broadcast address (FF:FF:FF:FF:FF:FF), or when the frame is destined to a multicast ethernet address
+  They do not reduce the broadcast domain
+  
+Routers more or less do with IP packets what switches do with Ethernet frames
+Differences:
+  IP packets travel inside ethernet frames
+  IP networks can be logically segmented into subnets
+  Switches do not usually know about IP, they only deal with ethernet frames
+
+Level 2 Network Design:
+
+A good network design is modular and hierarchical, with a clear seperation of functions
+  Core: Resilient, few changes, few features, high bandwidth, CPU power
+  Distribution: Aggregation, redundancy
+  Access: Port density, affordability, security features, many adds, moves and changes
+  
+Traffic Domains:
+
+Add traffic domain image
+
+Try to  eliminate collision domains
+  get rid of hubs
+Try to keep broadcast domain limited to no more than 250 simultaneously connected hosts
+  segment network using routers
+
+Guidlines:
+  Always connect hierarchically
+    If multiple switches present in a building, use an aggregation switch
+    Locate the aggregation switch close to the building entry point (e.g. fiber panel)
+    Locate edge switches close to users (e.g. one per floor) (max length for Cat 5 is 100 meters)
+  Minimize path between elements
+  Build incrementally
+  Do not dasiy-chain
+  Connect buildings hierarchically
+  
+Virtual LANs (VLANs)
+  Allow us to split switches into seperate (virtual) switches
+  Only members of a VLAN can see that VLAN's traffic
+    Inter-vlan traffic must go through a router
+  VLANs seperate broadcast domains
+  Assigning a host to the correct VLAN is a 2-step process
+    Connect host to correct port on switch
+    Assign host the correct IP address depending on the VLAN membership
+
+VLAN Operation:
+  As a device enters the network, it automatically assumes the VLAN membership of the port to which it is attached
+  The default VLAN for evey port in the switch is VLAN 1 and cannot be deleted
+
+VLANs vs Multiple Switches
+  VLANS provide segmentation based on broadcast domains
+  VLANSs logically segment switched networks based on the functions, project teams, or applications of the organization regardless of the physical location or connections to the network
+  All workstations and servers used by a particular workgroup share the same VLA, regardless of the physical connection or location
+
+Add VLAN Truncking image
+
+VLANs increase complexity
+  You can no longer just replace a switch 
+    VLAN configuration needs to be maintained
+    Field technicians need more skills
+  Need to make sure that all switch-to-switch trunks are carrying all the necessary VLANs
+    Keep in mind when adding/removing VLANs
+
+Good reasons to use VLANS:
+  Reduced need for seperate physical switches when seperate subnets are desirable
+  Seperating network traffic by function
+  Security of Network Managment Functions
+  Segregating a network within an organisation by staff function rather than physical location
+  
+Do not build "VLAN spaghetti":
+  Extending a VLAN to multiple buildings across trunk ports
+  Bad idea because:
+    Broadcast traffic is carried across all trunks from one end of the network to another
+    Broadcast storm can spread across the extent of the VLAN
+</pre>
+
 # Link Aggregation
 page 27
 
