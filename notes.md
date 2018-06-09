@@ -471,6 +471,157 @@ The link is also fault tolerant:
 # Switching Loops
 page 29
 
+<pre>
+If there is more than one path between two switches:
+  Forwarding tables become unstable
+    Source MAC addresses are repeatedly seen coming from different ports
+  Switches will broadcast each other's broadcasts
+    All available bandwidth is utilized
+    Switch processors cannot handle the load
+    Known as a broadcast storm
+    
+Add image of broadcast storm
+
+Loops can be taken advantage of:
+  Redundant paths improve resilience when a switch breaks or wiring fails
+
+Enableing the Spanning Tree Protocol (STP) on all switches can achieve redundancy without creating dangerous traffic loops
+
+Spanning Tree:
+
+"Given a connected undirected graph, a spanning tree of that graph is a subgraph which is a tree and connects all the verticies together"
+
+A single graph can have many different spanning trees
+
+Spanning Tree Protocol:
+  The purpose of the protocol is to have bridges dunamically discover a subset of the topology that is loop-free (a tree) and yet has just enough connectivity so that where physically possible, there is a path between every switch
+  
+Several flavors:
+  Traditional Spanning Tree (802.1d)
+  Rapid Spanning Tree or RSTP (802.1w)
+  Multiple Spanning Tree or MSTP (802.1s)
+  
+Traditional Spanning Tree (802.1d):
+  Switches exchange messages that allow them to ocmpute the Spanning Tree
+    Messages are called BPDUs (Bridge Protocol Data Units)
+    Two Types of BPDUs:
+      Configuration
+      Topology Change Notification (TCN)
+  
+  First Step:
+    Decide on a point of refernece: the ROOT BRIDGE
+    The election process is based on the Bridge ID, composed of:
+      The Bridge Priority: A two-byte value that is configurable
+      The MAC address: A unique, hardcoded address that cannot be changed
+  Each switch starts by send out BPDUs with a Root Bridge ID equal to its own Bridge ID
+  Recieved BPDUs are checked to see if a lower Root Bridge ID is being announced
+    If so, each switch replaces the value of the advertised Root Bridge ID with this new lower ID
+  Eventually, they all agree on who the Root Bridge is
+  
+  Root Port Selection: 
+  
+  Each switch needs to determine its Root Port
+    Find the port with the lowest Root Path Cost (cumulative cost of all the links leading to the Root Bridge)
+  
+  N.B Path cost is inversely proportional to the link speed e.g. the faster the link, the lower the cost
+  
+  Root Path Cost:
+    The accumulation of a links Path Cost and the Path Costs learned from neighboring switches
+  
+  1. Root Bridge sends out BPDUs with a Root Path Cost value of 0
+  2. Neighbor recieves BPDU and adds port's Path Cost to Root Path Cost recieved
+  3. Neighbor sends out BPDUs with new cumlative value as Root Path Cost
+  4. Other neighbor's down the line keep adding in the same fashion
+  
+  On each switch, the port where the lowest Root Path Cost was recieved becomes the Root Port
+    This is the port with the best path to the Root Bridge
+  
+  Electing Designated Ports (802.1d):
+  
+  Each network segment needs to have only one switch forwarding traffic to and from that segment
+  Switches need to identify one Designated Port per link or segment
+  Theone with the lowest cumulative Root Path Cost to the Root Bridge
+  Two or more ports in a segment having identical Root Path Costs is possible, which results in a tie condition
+  
+  All STP decision are based on the following swquence of conditions:
+    Lowest Root Bridge ID
+    Lowest Root Path Cost to Root Bridge
+    Lowest sender Bridge ID
+    Lowest Sender Port ID
+    
+  Any port that is not elected as either a Root Port, nor a Designated Port is put into the Blocking State
+  
+  Spanning Tree Protocol States:
+    Disabled - Port is shut down
+    Blocking - Not forwarding frames, receiving BPDUs
+    Listening - Not forwarding frames, sending and receiving BPDUs
+    Learning - Not forwarding frames, sending and receiving BPDUs, learning new MAC addresses
+    Forwarding - forwarding frames, sending and receiving BPDUs, learningnew MAC addresses
+    
+  STP Topology Changes:
+    Switches will recalculate if:
+      A new switch is introduced (It could be the new Root Bridge)
+      A switch fails
+      A link fails
+    
+  Root Bridge Placement:
+    Using default STP parameters maight result in an undesired situation
+    Traffic will flow in non-optimal ways
+    An unstable or slow switch might become the root
+    You need to plan your assignmnet of bridge priorities carefully
+  
+  802.1d Convergence Speeds:
+    Moving from the Blocking state to the Forwarding State takes atleast 2 x Forward Delay time units (~ 30 secs)
+    Some vendors have added enhancments such as ProtFast, which will reduce this time to a minimum for edge ports
+    Topology changes typicallyt take 30 seconds
+      This can be unacceptable in a production network
+  
+  Protecting the STP Topology:
+    Some vendors have included features that protect the STP topology e.g:
+      Root Guard - Prevents device attempting to become the Root (Used on switch to switch links)
+      BPDU Guard - Prevents ports attempting to join the STP process
+      
+  STP Design Guidlines:
+    ENABLE SPANNING TREE even if you don't have redundant paths
+    Always plan an set bridge priorities
+      Make the root choice deterministic
+      include an alternative root bridge
+    If possible, do not accept BPDUs on end user ports
+
+Rapid Spanning Tree (802.1w)
+  Convergence is MUCH faster - communication between switches is more interactive
+  Edge ports don't participate - edge ports transition to forwarding state immediately, if BPDUs are received on an edge port it becomes a non-edge port to prevent loops
+  
+Multiple Spanning Tree (802.1s)
+  Allows seperate spanning trees per VLAN group
+    Different topologies allow for load balancing between links
+    each group of VLANs are assigned to an "instance" of MST
+  Compatible with STP and RSTP
+
+Selecting Switches:
+  Minimum feature:
+    Standards compliance
+    Encrypted managment (SSH/HTTPS)
+    VLAN truncking
+    Spanning Tree (RSTP at least)
+    SNMP
+      At least v2 (v3 has better security)
+      Traps
+  Other recommended features:
+    DHCP Snooping
+      Prevent end-users from running a rogue DHCP server - Happens a lot with little wireless routers (Netgear, Linksys, etc) plugged in backwards
+      Uplink ports towards the legitimate DHCP server are defined as "trusted". If DHCPOFFERSs are seen coming from any untrusted port, they are dropped
+    Dynamic ARP inspection
+      A malicious host can perform a man-in-the-middle attach by sending gratuitous ARP responses, or responding to requests with bogus info
+      Switches can look inside ARP packets and discard gratuitous and invaild ARP packets
+
+Documentation:
+  Document where your switches are located - name switch after building name e.g building1-sw1
+  Keep files with physical location - floor, cloest number etc
+  Document your edge port connections - room number, jack number, server name
+
+</pre>
+
 ------------------------
 
 http://learn.lboro.ac.uk/pluginfile.php/981753/mod_resource/content/0/coc190_2017_Day4.pdf
