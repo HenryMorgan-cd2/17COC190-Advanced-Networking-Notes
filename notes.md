@@ -145,6 +145,10 @@ http://learn.lboro.ac.uk/pluginfile.php/976842/mod_resource/content/0/coc190_201
 # Concept Review
 *Day 2 - Page 2*
 
+<pre>
+Not needed
+</pre>
+
 # More IPv4
 *Day 2 - Page 8*
 <pre>
@@ -292,10 +296,66 @@ http://learn.lboro.ac.uk/pluginfile.php/979934/mod_resource/content/1/17coc190_D
 # Concept Review
 page 2
 
+<pre>
+Not needed
+</pre>
+
 # Static and Dynamic Routing
 page 6
+
+<pre>
+Static routes can be entered into the forwarding table manually
+  High degree of control
+  Needs negular human intervention
+  Not practical in large networks
+Dynamic Routing -> routing protocols automatically maintain the forwarding table
+
+Approaches:
+  Distance Vector:
+    Based on Bellman-Form algorthim
+    Each router tells its IMMEDIATE NEIGHBOURS about all the prefixes it can reach and the cost
+    Each router chooses leat-cost option for forwarding
+  
+  Link State:
+    Dijkstras algorithm
+    Routers tell all other routers in the network avout their direct links
+    Routers for their own view of the network and select least-cost forwarding option
+    
+Desirable Characteristics of Dynamic Routing:
+  Automatically detect and adapt to topology changes
+  Provide optimal routing
+  Scalability
+  Robustness
+  Simplicity
+  Rapid convergence
+  Some control of routing choices (e.g which links we prefer to use)
+  
+Convergence:
+  When all routers have a stable view of the network
+  Downtime when not converged
+    Packets don't get to where they are supposed to go (black holes, routing loops)
+  Occurs when there is a change in status of router or links
+  
+Internet Routing Hierarchy
+  Composed of Autonomous Systems (AS)
+  Each AS is an administrative entity that
+    Uses Interior Gateway Protocols (IGPs) to determine routing within the AS
+    Uses Exterior Gateway Protocols (EGPs) to interact with other ASs
+ 
+IGPs (four well known):
+  RIP
+  EIGRP
+  OSPF
+  ISIS
+  
+EGPs (one single de-facto standard):
+  BGP
+  
+</pre>
+
 # Layer-2 Network Design
 page 11
+
 # Link Aggregation
 page 27
 
@@ -326,6 +386,7 @@ http://learn.lboro.ac.uk/pluginfile.php/985655/mod_resource/content/0/coc190_201
 
 
 # Concept Review
+
 # Address Resolution Protocol (ARP)
 page 2
 
