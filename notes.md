@@ -629,11 +629,113 @@ http://learn.lboro.ac.uk/pluginfile.php/981753/mod_resource/content/0/coc190_201
 # Concept Review
 page 2
 
+<pre>
+Not needed
+</pre>
+
 # Address Resolution Protocol (ARP)
 page 10
 
+<pre>
+Ethernet/IP Address Resolution:
+  Internet Address:
+    Unique Worldwide
+    Independent of Physical Network technology
+  Ethernet Address:
+    Unique worldwide
+    Ethernet Only
+    "Attached" to physical interface
+  Need to map from higher layer to lower (i.e IP to Ethernet, using ARP)
+  
+Ethernet Reminder:
+  Ethernet is a broadcast medium
+  Structure of Ethernet Frame:
+    Preamble - Dest - Source - Type - Data - CRC
+  Entire IP packet makes data part of Ethernet frame
+
+Address Resolution Protocol:
+  ARP is only used in IPv4 (ND replaces ARP in IPv6)
+  Check ARP cache for matching IP address
+  If not found, broadcast packet with IP address to every host on Ethernet
+  Owner of the IP address responds
+  Response cached in ARP table fro future use
+  Old cache entries removed by timeout
+
+Types of ARP Messages:
+  ARP request - who is IP addr x.x.x.x tell IP addr y.y.y.y
+  ARP reply - IP addr x.x.x.x is Ethernet Address hh:hh:hh:hh:hh:hh
+
+ARP Procedure
+  ARP Cache is checked on first comp
+  ARP Request is sent using broadcast to all other comps
+  ARP Entry is added by target comp
+  ARP Reply is sent unicast by target to first
+  ARP Entry is added to first comp
+
+
+ARP Table:
+  IP Address - Hardware Address - Age (Sec)
+
+</pre>
+
 # Routing
 page 14
+
+<pre>
+
+Routing's 3 Aspects:
+  Acquisition of information about the IP subnets that are reachable through an internet
+    Static routing configuration information
+    Dynamic routing info protocols (e.g. BGP4, OSPF, RIP, ISIS)
+    Each mechanism/protocol constructs a Routing Information Base (RIB)
+  Construction of a Forwarding Table
+    Synthesis of a single table from all the Routing Information Bases (RIBs)
+    Info about a destination subnet may be acquired multiple ways
+    A precedence is defined among the RIBs to arbitrate conflicts on the same subnet
+    Also called a Forwarding Information Base (FIB)
+  Use of a forwarding table to forward individual packets
+    Selection of the next-hop router and interface
+    Hop-by-hop, each router makes an independent decision
+
+Routing Tables Feed the Forwarding Table:
+
+                  |BGP 4 Routing Table
+FIB  <-- RIBs <---|ISIS - Link State Database
+                  | Static Routes
+                  
+RIB Construction:
+  Each routing protocol builds its own RIB
+  Each protocol has its own "view" of "costs"
+    e.g. ISIS is administrative weights
+         BGP4 is Autonomous System path length
+
+FIB Construction
+  THERE IS ONLY ONE FORWARDING TABLE  
+  An algorithm is used to choose one next-hop toward each IP destination known by any routing protocol
+    The set of IP destinations present in any RIB are collected
+    If a particular IP destination is present in only one RIB, that RIB determines the next hop forwarding path for that destination
+    If a particular IP destination is present in multiple RIBs, then a precedence is defined to select which RIB entry determines the next-hop forwarding path for that destination
+  There are no standards for this; it is an implementation (vendor) decision
+
+FIB Contents:
+  IP subnet and mask (or length) of destinations - can be the "default" IP subnet
+  IP address of the "next hop" toward that IP subnet
+  Interface ID of the subnet associated with the next hop
+  Optional: cost metric associated with this entry in the forwarding table
+
+IP Routing:
+  Default Route:
+    Where to send packets if there is no entry for the destination in the routing table
+    Most machines have a single default route
+    Often referred to as a default gateway
+  0.0.0.0/0 - matches all possible destinations, but is usually not the longest match
+  
+IP Route Lookup: Longest Match Routing
+  Most specific/longest match always wins - MANY PEOPLE FORGET THIS, EVEN EXPERIENCES ISP ENGINEERS
+  Default route is 0.0.0.0/0  
+    Can handle it using the normal longest match algorithm, matches everything, always the shortest match
+
+</pre>
 
 http://learn.lboro.ac.uk/pluginfile.php/981754/mod_resource/content/0/coc190_2017_day4a.pdf
 
