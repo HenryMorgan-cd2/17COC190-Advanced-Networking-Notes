@@ -739,8 +739,92 @@ IP Route Lookup: Longest Match Routing
 
 http://learn.lboro.ac.uk/pluginfile.php/981754/mod_resource/content/0/coc190_2017_day4a.pdf
 
-# Dynamic Routing
-page 1
+# Distance Vector and Link State
+page 7
+
+<pre>
+
+Distance Vector:
+  Accumulates a meteric hop-by-hop as the protocol messages traverse the subnets
+
+Link State:
+  Builds a network topology database
+  Computes best path routes from current node to all destinations base don the topology
+
+Deistance Vector Protocols:
+  Each router only advertises to its IMMEDIATE neighbours, its "distance" to various IP subnets
+  Each router computes its next-hop routing table based on least cost determined from info recieved from its neighbors and the cost to those neighbors
+
+Distance Vector Algorithm:
+  Bellman-Ford Equation:
+    d_x(y) := cost of least-cost path from x to y
+    
+    d_x(y) = min_v{c(x,v) + d_v(y)} where min is taken over all neighbors of v of x
+  
+  Add image of example
+
+Distance Vector RIB Parameters:
+  Accumulated cost:
+    Cost is a constant administrative assignment for each subnet
+    Assignment is typically "1" for each subnet (equivalent to hop-count)
+    Included in routing protocol exchange
+  Time the update was recieved (for timeout)
+  The next-hop the entry was recieved from
+    Sender's ID is included in routing protocol exchange
+  Accumulated Hop count and Maximum Hop Count
+    Used to detect cycles
+    Hop count iuncluded in routing protocol exchange
+
+Distance Vector: Additions
+  When a router learns of new reachable subnets - at router startup, or when an interface is enabled or restored to service
+  A routing update is broadcast to all neighbors
+  Any router recieving the packet compares the cost it recieved in the new packet with that in its RIB
+  If the cost is smaller or the subnet is new
+    The new entry is used in the RIB
+    The new entry is broadcast to all its beighbors (except the one from which it was recieved)
+ 
+Distance Vector: Removals:
+  Each RIB entry is aged - a timeout defines when an entry is removed from the RIB
+  Periodically, each router re-advertises all the routes it knows to its neighbors
+    This can be done in many ways: from simple neighbor hellos to enumeration of all routes
+  If a neighbor does not respond within a timeout, all routes learned from that neibour are removed
+  Router removal may be advertises to neighbors
+
+Distance Vector Algorithm (2):
+  D_x(y) = estimate of least cost from x to y
+  Distance vector: D_x = [D_x(y): y є N]
+  Node x knows cost to each neighbor v: c(x,v)
+  Node x maiontains D_x = [D_x(y): y є N]
+  Node x also maintains its neigbors distance vectors
+    For each neighbor v, x maintains D_v = [D_v(y): y є N]
+  
+Distance Vector Algorithm (3):
+  Basic Idea:
+    Each node periodically sends its own distance vector estimates to neighbors
+    When a node x recieves new DV estimate from neighbor, it updates its own DV using B-F equation
+  Under "natural" conditions the esimates of D_x(y) converge to the actual least cost d_x(y)
+  
+Distance Vector Algorithm (4):
+  Iterative, asynchronous: eahc local iteration caused by: local link cost change or DV update message from neighbor
+  Distributed: each node notifies neighbors only when its DV changes (neighbors then notify their neighbors if necessary)
+
+Loop:
+  Wait for (change in local link cost or msg from neighbor)
+  Recompute estimates
+  If DV to any dest has changed, notify neighbors
+
+DV: Link Cost Changes:
+  Node detrects local link cost change
+  Updates routing info, recalculates DV
+  If DV changes, notify neighbors
+  
+  Add image from page 14
+  
+  At time t_0, y detects the link-cost change, updates DV, and informs neighbors
+  At theim t_1, z recieves the update from y and updates its table. It conmputes a new least cost to x and sends its neighbors its DV
+  At time, t_2, y recieves z's update and updates its distance table. y's least costs do not change and hence y does not send any messaage to z
+
+</pre>
 
 ------------------------
 
